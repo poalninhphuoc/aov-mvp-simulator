@@ -15,7 +15,19 @@ function Slider({ label, value, min, max, onChange, color = '#06B6D4', suffix = 
     <div>
       <div className="mb-2 flex items-baseline justify-between text-sm">
         <span className="text-slate-300">{label}</span>
-        <span className="font-display text-xl font-bold tabular-nums" style={{ color }}>{value}{suffix}</span>
+        <span className="flex items-baseline gap-0.5">
+          <input
+            type="number" min={min} max={max} value={value} aria-label={`${label} (nhập số)`}
+            onFocus={(e) => e.target.select()}
+            onChange={(e) => {
+              if (e.target.value === '' || Number.isNaN(Number(e.target.value))) return
+              onChange(Math.min(max, Math.max(min, Math.round(Number(e.target.value)))))
+            }}
+            className="num w-14 rounded bg-white/5 px-1.5 py-0.5 text-right font-display text-lg font-bold tabular-nums outline-none focus:bg-white/10 focus:ring-1 focus:ring-white/30"
+            style={{ color }}
+          />
+          {suffix && <span className="text-sm text-slate-400">{suffix}</span>}
+        </span>
       </div>
       <input
         type="range" min={min} max={max} value={value} className="w-full"
@@ -202,30 +214,29 @@ export default function App() {
         <div className="px-5 py-8 lg:h-full lg:overflow-y-auto lg:border-r lg:border-white/10 lg:px-10">
           <div className="space-y-9">
             <Section no="01" title="Vai trò">
-              <div className="grid grid-cols-5 gap-1.5">
+              <div className="flex flex-wrap gap-1.5">
                 {Object.entries(ROLES).map(([id, r]) => {
                   const Icon = ROLE_ICONS[id]
                   const active = s.role === id
                   return (
                     <button key={id} onClick={() => set({ role: id })} title={`${r.label} — ${r.hint}`}
-                      className={`flex flex-col items-center gap-1 rounded-lg px-1 py-3 text-center transition ${
+                      className={`flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-xs font-medium transition ${
                         active ? 'bg-gold-500/20 text-gold-400' : 'text-slate-400 hover:bg-white/5 hover:text-slate-200'}`}>
-                      <Icon size={20} />
-                      <span className="text-[11px] font-medium leading-tight">{r.label}</span>
+                      <Icon size={14} /> {r.label}
                     </button>
                   )
                 })}
               </div>
               <p className="text-xs text-slate-500">{ROLES[s.role].hint}</p>
 
-              <div className="grid grid-cols-2 gap-1.5 pt-2">
+              <div className="inline-flex gap-1 rounded-md bg-black/30 p-0.5">
                 <button onClick={() => set({ win: true })}
-                  className={`flex items-center justify-center gap-2 rounded-lg py-2.5 text-sm font-semibold transition ${s.win ? 'bg-gold-500 text-ink-950' : 'text-slate-400 hover:bg-white/5 hover:text-white'}`}>
-                  <Trophy size={16} /> Thắng
+                  className={`flex items-center gap-1.5 rounded px-3 py-1 text-xs font-semibold transition ${s.win ? 'bg-gold-500 text-ink-950' : 'text-slate-400 hover:text-white'}`}>
+                  <Trophy size={13} /> Thắng
                 </button>
                 <button onClick={() => set({ win: false })}
-                  className={`flex items-center justify-center gap-2 rounded-lg py-2.5 text-sm font-semibold transition ${!s.win ? 'bg-slate-600 text-white' : 'text-slate-400 hover:bg-white/5 hover:text-white'}`}>
-                  <Skull size={16} /> Thua
+                  className={`flex items-center gap-1.5 rounded px-3 py-1 text-xs font-semibold transition ${!s.win ? 'bg-slate-600 text-white' : 'text-slate-400 hover:text-white'}`}>
+                  <Skull size={13} /> Thua
                 </button>
               </div>
             </Section>
@@ -250,10 +261,10 @@ export default function App() {
               <Slider label="% Sát thương gánh chịu" value={s.dmgTaken} min={0} max={60} suffix="%" onChange={(dmgTaken) => set({ dmgTaken })} color="#06B6D4" />
               <div>
                 <div className="mb-2 text-sm text-slate-300">Đẩy trụ / Mục tiêu lớn</div>
-                <div className="grid grid-cols-2 gap-1.5">
+                <div className="flex flex-wrap gap-1.5">
                   {TOWER_LEVELS.map((t) => (
                     <button key={t.id} onClick={() => set({ tower: t.id })}
-                      className={`rounded-lg py-2 text-xs font-medium transition ${s.tower === t.id ? 'bg-cyan-400/20 text-cyan-300' : 'text-slate-400 hover:bg-white/5'}`}>
+                      className={`rounded-md px-2.5 py-1 text-xs font-medium transition ${s.tower === t.id ? 'bg-cyan-400/20 text-cyan-300' : 'text-slate-400 hover:bg-white/5'}`}>
                       {t.label} <span className="opacity-60">({t.bonus > 0 ? `+${t.bonus}` : '0'}đ)</span>
                     </button>
                   ))}
@@ -262,17 +273,14 @@ export default function App() {
             </Section>
 
             <Section no="04" title="Huy hiệu & Preset">
-              <div className="space-y-1">
+              <div className="flex flex-wrap gap-1.5">
                 {BADGES.map((bd) => {
                   const on = s.badges.includes(bd.id)
                   return (
                     <label key={bd.id}
-                      className={`flex cursor-pointer items-center justify-between gap-2 rounded-lg px-3 py-2 text-sm transition ${on ? 'bg-gold-500/15 text-gold-400' : 'text-slate-300 hover:bg-white/5'}`}>
-                      <span className="flex items-center gap-2">
-                        <input type="checkbox" checked={on} onChange={() => toggleBadge(bd.id)} className="accent-amber-500" />
-                        {bd.label}
-                      </span>
-                      <span className="text-xs opacity-70">+{bd.bonus}đ</span>
+                      className={`flex cursor-pointer items-center gap-1.5 rounded-md px-2.5 py-1 text-xs transition ${on ? 'bg-gold-500/20 text-gold-400' : 'text-slate-400 hover:bg-white/5'}`}>
+                      <input type="checkbox" checked={on} onChange={() => toggleBadge(bd.id)} className="h-3 w-3 accent-amber-500" />
+                      {bd.label} <span className="opacity-60">+{bd.bonus}đ</span>
                     </label>
                   )
                 })}
