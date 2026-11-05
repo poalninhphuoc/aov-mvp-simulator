@@ -65,7 +65,7 @@ export function calcScore(s) {
   const base = s.win ? 4.0 : 3.3
   const weightedKA = k * r.wK + a * r.wA
   const effectiveDeath = d === 0 ? 0.85 : Math.pow(d, 0.85)
-  const kda = Math.min(4.8, Math.sqrt(weightedKA / effectiveDeath) * 1.15)
+  const kda = Math.min(5.6, Math.sqrt(weightedKA / effectiveDeath) * 1.15)
   const zeroDeath = d === 0 && k + a >= 8 ? 0.6 : 0
   const kpScore = Math.pow(kp / 100, 1.3) * 2.2
   const combat = (s.dmgDealt * r.wDmg + s.dmgTaken * r.wTank) * 0.042
@@ -77,7 +77,7 @@ export function calcScore(s) {
   const deathPenalty = -Math.min(4.5, Math.pow(unjustified, 1.15) * 0.42)
 
   const rawTotal = base + kda + zeroDeath + kpScore + combat + tower + badge + deathPenalty
-  const soft = rawTotal > 11 ? 11 + Math.pow(rawTotal - 11, 0.78) : rawTotal
+  const soft = rawTotal > 11 ? 11 + Math.pow(rawTotal - 11, 0.8) : rawTotal
   const rating = clamp(3.0, 16.0, soft)
 
   return {
