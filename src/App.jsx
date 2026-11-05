@@ -78,7 +78,7 @@ export default function App() {
           </h1>
           <p className="mt-1 text-sm text-slate-400">Công cụ phân tích & mô phỏng điểm MVP — mã nguồn mở, công thức minh bạch.</p>
         </div>
-        <a href="https://github.com/" target="_blank" rel="noreferrer"
+        <a href="https://github.com/poalninhphuoc/aov-mvp-simulator" target="_blank" rel="noreferrer"
            className="flex items-center gap-2 rounded-lg border border-white/10 px-3 py-2 text-sm text-slate-300 transition hover:bg-white/5">
           <Github size={16} /> GitHub
         </a>
