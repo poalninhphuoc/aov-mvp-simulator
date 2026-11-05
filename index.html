@@ -3,13 +3,69 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Công cụ phân tích & mô phỏng điểm MVP Liên Quân Mobile (AOV KDA & MVP Rating Simulator)" />
-    <title>AOV KDA & MVP Rating Simulator</title>
+
+    <title>AOV True KDA & MVP Rating Simulator – Tính điểm MVP & hạng SSS Liên Quân Mobile</title>
+    <meta name="description" content="Công cụ miễn phí tính điểm MVP, KDA thuần, KP% và điều kiện lên hạng S / SS / SSS trong Liên Quân Mobile (Arena of Valor). Chọn vai trò, nhập K/D/A, xem kết quả ngay." />
+    <meta name="keywords" content="liên quân mobile, tính điểm MVP, KDA liên quân, hạng SSS liên quân, điểm đánh giá trận đấu, AOV MVP rating, arena of valor, cách tính KDA, KP% liên quân" />
+    <meta name="author" content="poalninhphuoc" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="theme-color" content="#0B0F19" />
+    <link rel="canonical" href="https://poalninhphuoc.github.io/aov-mvp-simulator/" />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="AOV MVP Rating Simulator" />
+    <meta property="og:locale" content="vi_VN" />
+    <meta property="og:title" content="AOV True KDA & MVP Rating Simulator" />
+    <meta property="og:description" content="Mô phỏng điểm MVP, KDA, KP% và điều kiện lên hạng S / SS / SSS Liên Quân Mobile." />
+    <meta property="og:url" content="https://poalninhphuoc.github.io/aov-mvp-simulator/" />
+    <meta property="og:image" content="https://poalninhphuoc.github.io/aov-mvp-simulator/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="AOV True KDA & MVP Rating Simulator – hạng SSS" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="AOV True KDA & MVP Rating Simulator" />
+    <meta name="twitter:description" content="Mô phỏng điểm MVP, KDA, KP% và điều kiện lên hạng S / SS / SSS Liên Quân Mobile." />
+    <meta name="twitter:image" content="https://poalninhphuoc.github.io/aov-mvp-simulator/og-image.png" />
+
+    <!-- Structured data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "AOV True KDA & MVP Rating Simulator",
+      "alternateName": "Công cụ tính điểm MVP Liên Quân Mobile",
+      "url": "https://poalninhphuoc.github.io/aov-mvp-simulator/",
+      "description": "Công cụ mô phỏng điểm MVP, KDA thuần, KP% và điều kiện lên hạng S / SS / SSS trong Liên Quân Mobile.",
+      "applicationCategory": "GameApplication",
+      "operatingSystem": "Any",
+      "inLanguage": "vi",
+      "isAccessibleForFree": true,
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "VND" },
+      "image": "https://poalninhphuoc.github.io/aov-mvp-simulator/og-image.png",
+      "license": "https://opensource.org/licenses/MIT",
+      "codeRepository": "https://github.com/poalninhphuoc/aov-mvp-simulator"
+    }
+    </script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!-- Nội dung tĩnh cho công cụ tìm kiếm / khi tắt JavaScript. React sẽ thay thế khi tải xong. -->
+      <main style="max-width:720px;margin:0 auto;padding:32px 20px;font-family:system-ui,sans-serif;color:#cbd5e1">
+        <h1 style="color:#fff">AOV True KDA &amp; MVP Rating Simulator</h1>
+        <p>Công cụ tính điểm MVP Liên Quân Mobile (Arena of Valor): nhập K/D/A, tổng mạng toàn đội, % sát thương gây ra và gánh chịu, đẩy trụ, huy hiệu để xem điểm đánh giá trận đấu từ 3.0 đến 16.0, KDA thuần, tỷ lệ tham gia giao tranh (KP%) và điều kiện lên hạng S, SS, SSS.</p>
+        <p>Hỗ trợ 5 vai trò: Xạ thủ / Pháp sư, Sát thủ / Rừng, Đấu sĩ / Solo, Trợ thủ và Đỡ đòn. Cần bật JavaScript để sử dụng công cụ.</p>
+      </main>
+    </div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

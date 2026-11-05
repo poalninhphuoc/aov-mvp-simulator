@@ -41,6 +41,10 @@ Final    = clamp(3, 16, Raw > 11 ? 11 + (Raw-11)^0.8 : Raw)
 
 Hạng: SSS cần điểm ≥ 14.2, thắng, ít chết, KP ≥ 72% và thống trị vai trò; SS cần điểm ≥ 12.3 cùng điều kiện cứng riêng; S cần ≥ 10.0 và chết ≤ 5; A 7.8–9.9; B 5.5–7.7; C < 5.5. Chi tiết trong [`src/lib/rating.js`](src/lib/rating.js).
 
+## SEO
+
+`index.html` đã có title/description/keywords, canonical, Open Graph, Twitter Card, JSON-LD (`WebApplication`) và nội dung tĩnh dự phòng; `public/` có `robots.txt`, `sitemap.xml`, `site.webmanifest`, `favicon.svg`, `og-image.png` (nguồn: `design/og-image.svg`). Các URL tuyệt đối đang trỏ tới `https://poalninhphuoc.github.io/aov-mvp-simulator/` — nếu deploy ở domain khác, thay chuỗi này trong `index.html`, `public/robots.txt` và `public/sitemap.xml`.
+
 ## Triển khai GitHub Pages
 
 Đặt `base: '/<tên-repo>/'` trong `vite.config.js`, chạy `npm run build` rồi publish thư mục `dist/`.

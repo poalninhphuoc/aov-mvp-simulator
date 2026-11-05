@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://poalninhphuoc.github.io/aov-mvp-simulator/sitemap.xml

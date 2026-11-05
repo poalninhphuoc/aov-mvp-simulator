@@ -1,0 +1,11 @@
+{
+  "name": "AOV True KDA & MVP Rating Simulator",
+  "short_name": "AOV MVP",
+  "description": "Tính điểm MVP, KDA, KP% và hạng S / SS / SSS Liên Quân Mobile",
+  "lang": "vi",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0B0F19",
+  "theme_color": "#0B0F19",
+  "icons": [{ "src": "favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+}

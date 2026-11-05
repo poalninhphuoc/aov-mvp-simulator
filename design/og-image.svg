@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="t" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#EF4444"/><stop offset="1" stop-color="#F59E0B"/></linearGradient>
+    <radialGradient id="a" cx="0.2" cy="0.4" r="0.7"><stop offset="0" stop-color="#EF4444" stop-opacity="0.35"/><stop offset="1" stop-color="#EF4444" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="#080B14"/>
+  <rect width="1200" height="630" fill="url(#a)"/>
+  <g stroke="#ffffff" stroke-opacity="0.04"><path d="M0 105H1200M0 210H1200M0 315H1200M0 420H1200M0 525H1200M200 0V630M400 0V630M600 0V630M800 0V630M1000 0V630"/></g>
+  <text x="80" y="110" font-family="Arial, sans-serif" font-size="26" letter-spacing="8" fill="#F59E0B">LIÊN QUÂN MOBILE · ARENA OF VALOR</text>
+  <text x="70" y="400" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="330" fill="url(#t)">SSS</text>
+  <text x="80" y="500" font-family="Arial, sans-serif" font-weight="700" font-size="56" fill="#FFFFFF">AOV True KDA &amp; MVP Rating Simulator</text>
+  <text x="80" y="560" font-family="Arial, sans-serif" font-size="30" fill="#94A3B8">Mô phỏng điểm MVP, KDA, KP% và điều kiện lên hạng S / SS / SSS</text>
+  <g transform="translate(830,150)" font-family="Arial, sans-serif">
+    <text x="0" y="0" font-size="22" letter-spacing="6" fill="#64748B">ĐIỂM</text>
+    <text x="0" y="90" font-size="100" font-weight="700" fill="#FFFFFF">15.2</text>
+    <text x="0" y="170" font-size="22" letter-spacing="6" fill="#64748B">KDA THUẦN</text>
+    <text x="0" y="260" font-size="100" font-weight="700" fill="#FFFFFF">28.0</text>
+  </g>
+</svg>
