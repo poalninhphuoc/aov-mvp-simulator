@@ -95,6 +95,45 @@ function Chip({ active, onClick, children, tone = 'gold', title }) {
   )
 }
 
+function Segmented({ options, value, onChange }) {
+  return (
+    <div className="inline-flex max-w-full overflow-hidden rounded-lg ring-1 ring-white/10">
+      {options.map((o, i) => (
+        <button key={String(o.value)} onClick={() => onChange(o.value)}
+          className={`flex items-center justify-center gap-1.5 whitespace-nowrap px-3.5 py-1.5 text-xs font-semibold transition ${i > 0 ? 'border-l border-white/10' : ''} ${
+            value === o.value ? o.cls : 'text-slate-400 hover:bg-white/5 hover:text-white'}`}>
+          {o.icon}
+          {o.sub ? (
+            <span className="flex flex-col items-center leading-tight">
+              {o.label}<span className="text-[10px] font-normal opacity-60">{o.sub}</span>
+            </span>
+          ) : o.label}
+        </button>
+      ))}
+    </div>
+  )
+}
+
+function Scoreline({ k, d, a, kda }) {
+  const items = [['K', k, '#F59E0B'], ['D', d, '#E66767'], ['A', a, '#06B6D4']]
+  return (
+    <div className="flex items-stretch">
+      {items.map(([l, v, c], i) => (
+        <div key={l} className={`flex-1 ${i > 0 ? 'border-l border-white/10 pl-4' : ''}`}>
+          <div className="text-[10px] font-semibold uppercase tracking-[0.25em]" style={{ color: c }}>{l}</div>
+          <div className="font-display text-4xl font-bold leading-none text-white tabular-nums">{v}</div>
+        </div>
+      ))}
+      <div className="flex-1 border-l border-white/10 pl-4">
+        <div className="text-[10px] font-semibold uppercase tracking-[0.25em] text-slate-500">KDA</div>
+        <div className="font-display text-4xl font-bold leading-none text-slate-300 tabular-nums">{kda.toFixed(1)}</div>
+      </div>
+    </div>
+  )
+}
+
+const PRESET_RESULTS = PRESETS.map((p) => ({ p, r: calcRating(p.state) }))
+
 function Ruler({ rating, tier }) {
   const pos = ((rating - 3) / 13) * 100
   return (
@@ -335,7 +374,7 @@ export default function App() {
 
       <main className="grid flex-1 lg:min-h-0 lg:grid-cols-[minmax(380px,5fr)_7fr] lg:grid-rows-1">
         {/* ===== Controls ===== */}
-        <div className="bg-ink-950/60 px-5 py-8 lg:h-full lg:overflow-y-auto lg:border-r lg:border-white/10 lg:px-10">
+        <div className="bg-gradient-to-b from-white/[0.025] to-transparent px-5 py-8 lg:h-full lg:overflow-y-auto lg:border-r lg:border-white/10 lg:px-10">
           <div className="space-y-9">
             <Section no="01" title="Vai trò & Kết quả">
               <div className="flex flex-wrap gap-1.5">
@@ -349,13 +388,14 @@ export default function App() {
                 })}
               </div>
               <p className="text-xs text-slate-500">{ROLES[s.role].hint}</p>
-              <div className="flex gap-1.5">
-                <Chip active={s.win} onClick={() => set({ win: true })}><Trophy size={13} /> Thắng</Chip>
-                <Chip active={!s.win} onClick={() => set({ win: false })}><Skull size={13} /> Thua</Chip>
-              </div>
+              <Segmented value={s.win} onChange={(win) => set({ win })} options={[
+                { value: true, label: 'Thắng', icon: <Trophy size={13} />, cls: 'bg-gold-500 text-ink-950' },
+                { value: false, label: 'Thua', icon: <Skull size={13} />, cls: 'bg-slate-600 text-white' },
+              ]} />
             </Section>
 
             <Section no="02" title="K / D / A & Đội">
+              <Scoreline k={s.k} d={s.d} a={s.a} kda={res.rawKda} />
               <Slider label="Hạ gục (K)" value={s.k} min={0} max={30} onChange={setK} color="#F59E0B" />
               <Slider label="Bị hạ gục (D)" value={s.d} min={0} max={20} onChange={(d) => set({ d })} color="#E66767" />
               <Slider label="Phụ trợ (A)" value={s.a} min={0} max={40} onChange={(a) => set({ a })} color="#06B6D4" />
@@ -375,13 +415,10 @@ export default function App() {
               <Slider label="% Sát thương gánh chịu" value={s.dmgTaken} min={0} max={60} suffix="%" onChange={(dmgTaken) => set({ dmgTaken })} color="#06B6D4" />
               <div>
                 <div className="mb-2 text-[13px] text-slate-400">Đẩy trụ / Mục tiêu lớn</div>
-                <div className="flex flex-wrap gap-1.5">
-                  {TOWER_LEVELS.map((t) => (
-                    <Chip key={t.id} tone="cyan" active={s.tower === t.id} onClick={() => set({ tower: t.id })}>
-                      {t.label} <span className="opacity-60">{t.bonus > 0 ? `+${t.bonus}` : '0'}đ</span>
-                    </Chip>
-                  ))}
-                </div>
+                <Segmented value={s.tower} onChange={(tower) => set({ tower })}
+                  options={TOWER_LEVELS.map((t) => ({
+                    value: t.id, label: t.label, sub: `${t.bonus > 0 ? `+${t.bonus}` : '0'}đ`, cls: 'bg-cyan-400/20 text-cyan-200',
+                  }))} />
               </div>
             </Section>
 
@@ -389,6 +426,7 @@ export default function App() {
               <div className="flex flex-wrap gap-1.5">
                 {BADGES.map((bd) => (
                   <Chip key={bd.id} active={s.badges.includes(bd.id)} onClick={() => toggleBadge(bd.id)}>
+                    {s.badges.includes(bd.id) && <Check size={12} strokeWidth={3} />}
                     {bd.label} <span className="opacity-60">+{bd.bonus}đ</span>
                   </Chip>
                 ))}
@@ -396,14 +434,29 @@ export default function App() {
             </Section>
 
             <Section no="05" title="Preset kiểm thử">
-              <div className="flex flex-wrap gap-1.5">
-                {PRESETS.map((p) => (
-                  <Chip key={p.id} tone="cyan" active={false} onClick={() => setS(p.state)}>
-                    <Zap size={12} /> {p.label}
-                  </Chip>
-                ))}
-                <Chip active={false} onClick={() => setS(DEFAULT_STATE)}><RotateCcw size={12} /> Đặt lại</Chip>
-              </div>
+              <ul>
+                {PRESET_RESULTS.map(({ p, r }) => {
+                  const on = JSON.stringify(p.state) === JSON.stringify(s)
+                  return (
+                    <li key={p.id}>
+                      <button onClick={() => setS(p.state)}
+                        className={`group flex w-full items-center gap-3 border-b border-white/[0.06] px-2 py-2.5 text-left text-[13px] transition hover:bg-white/[0.04] ${on ? 'bg-white/[0.05] text-white' : 'text-slate-300'}`}>
+                        <Zap size={13} className={on ? 'text-gold-500' : 'text-slate-600 group-hover:text-slate-400'} />
+                        <span className="flex-1">{p.label}</span>
+                        <span className="tabular-nums text-xs text-slate-500">{r.rating.toFixed(1)}</span>
+                        <span className="w-9 rounded px-1 py-0.5 text-center font-display text-sm font-bold"
+                              style={{ color: RANK_COLORS[r.rank.tier], background: `${RANK_COLORS[r.rank.tier]}1f` }}>
+                          {r.rank.tier}
+                        </span>
+                      </button>
+                    </li>
+                  )
+                })}
+              </ul>
+              <button onClick={() => setS(DEFAULT_STATE)}
+                className="flex items-center gap-1.5 text-xs text-slate-500 transition hover:text-white">
+                <RotateCcw size={12} /> Đặt lại mặc định
+              </button>
             </Section>
           </div>
         </div>
