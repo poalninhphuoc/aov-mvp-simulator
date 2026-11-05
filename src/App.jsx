@@ -1,6 +1,6 @@
-import { useMemo, useRef, useState } from 'react'
+import { useMemo, useState } from 'react'
 import {
-  Crosshair, Swords, Shield, HeartHandshake, ShieldHalf, Trophy, Skull, Zap, Calculator,
+  Crosshair, Swords, Shield, HeartHandshake, ShieldHalf, Trophy, Skull, Zap,
   CheckCircle2, XCircle, AlertTriangle, Github, RotateCcw, Flame, Lock, Unlock,
 } from 'lucide-react'
 import {
@@ -64,7 +64,7 @@ function Gates({ title, tier, gates, achieved }) {
   )
 }
 
-function Dashboard({ s, res, stale }) {
+function Dashboard({ s, res }) {
   const { rank } = res
   const tier = rank.tier
   const color = RANK_COLORS[tier]
@@ -83,12 +83,6 @@ function Dashboard({ s, res, stale }) {
 
   return (
     <div className="space-y-10">
-      {stale && (
-        <div className="flex items-center gap-2 text-sm text-amber-300">
-          <AlertTriangle size={15} /> Thông số đã thay đổi — bấm "Tính toán lại" để cập nhật kết quả.
-        </div>
-      )}
-
       {/* Hero: no box, just type */}
       <div>
         <div className="flex flex-wrap items-end gap-x-12 gap-y-6">
@@ -181,29 +175,16 @@ function Dashboard({ s, res, stale }) {
 
 export default function App() {
   const [s, setS] = useState(DEFAULT_STATE)
-  const [submitted, setSubmitted] = useState(null)
   const set = (patch) => setS((p) => ({ ...p, ...patch }))
   const setK = (k) => set({ k, teamKills: Math.max(s.teamKills, k) })
   const toggleBadge = (id) =>
     set({ badges: s.badges.includes(id) ? s.badges.filter((b) => b !== id) : [...s.badges, id] })
 
-  const res = useMemo(() => (submitted ? calcRating(submitted) : null), [submitted])
-  const stale = submitted && JSON.stringify(submitted) !== JSON.stringify(s)
-  const resultRef = useRef(null)
-  const calculate = (state = s) => {
-    setSubmitted(state)
-    if (window.matchMedia('(max-width: 1023px)').matches) {
-      setTimeout(() => resultRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50)
-    }
-  }
-
-  const formCls = res
-    ? 'space-y-9'
-    : 'grid gap-x-12 gap-y-10 md:grid-cols-2 xl:grid-cols-4'
+  const res = useMemo(() => calcRating(s), [s])
 
   return (
-    <div className="flex min-h-screen w-full flex-col">
-      <header className="flex flex-wrap items-center justify-between gap-4 border-b border-white/10 px-5 py-4 lg:px-10">
+    <div className="flex min-h-screen w-full flex-col lg:h-screen lg:overflow-hidden">
+      <header className="flex shrink-0 flex-wrap items-center justify-between gap-4 border-b border-white/10 px-5 py-4 lg:px-10">
         <div className="flex items-baseline gap-4">
           <h1 className="font-display text-2xl font-bold text-white sm:text-3xl">
             AOV True KDA & <span className="bg-gradient-to-r from-gold-400 to-gold-600 bg-clip-text text-transparent">MVP Rating</span> Simulator
@@ -216,10 +197,10 @@ export default function App() {
         </a>
       </header>
 
-      <main className={`flex-1 ${res ? 'grid lg:grid-cols-[minmax(380px,5fr)_7fr]' : ''}`}>
+      <main className="grid flex-1 lg:min-h-0 lg:grid-cols-[minmax(380px,5fr)_7fr] lg:grid-rows-1">
         {/* ===== Controls ===== */}
-        <div className={`px-5 py-8 lg:px-10 ${res ? 'lg:border-r lg:border-white/10' : ''}`}>
-          <div className={formCls}>
+        <div className="px-5 py-8 lg:h-full lg:overflow-y-auto lg:border-r lg:border-white/10 lg:px-10">
+          <div className="space-y-9">
             <Section no="01" title="Vai trò">
               <div className="grid grid-cols-5 gap-1.5">
                 {Object.entries(ROLES).map(([id, r]) => {
@@ -298,12 +279,12 @@ export default function App() {
               </div>
               <div className="flex flex-wrap gap-2 pt-2">
                 {PRESETS.map((p) => (
-                  <button key={p.id} onClick={() => { setS(p.state); calculate(p.state) }}
+                  <button key={p.id} onClick={() => setS(p.state)}
                     className="flex items-center gap-1.5 rounded-full bg-cyan-400/10 px-3 py-1.5 text-xs font-medium text-cyan-300 transition hover:bg-cyan-400/20">
                     <Zap size={12} /> {p.label}
                   </button>
                 ))}
-                <button onClick={() => { setS(DEFAULT_STATE); setSubmitted(null) }}
+                <button onClick={() => setS(DEFAULT_STATE)}
                   className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs text-slate-400 transition hover:text-white">
                   <RotateCcw size={12} /> Đặt lại
                 </button>
@@ -311,21 +292,15 @@ export default function App() {
             </Section>
           </div>
 
-          <button onClick={() => calculate()}
-            className="mt-10 flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-gold-500 to-gold-600 py-4 font-display text-xl font-bold uppercase tracking-[0.2em] text-ink-950 transition hover:brightness-110 active:scale-[0.995]">
-            <Calculator size={22} /> {res ? 'Tính toán lại' : 'Tính toán'}
-          </button>
         </div>
 
-        {/* ===== Results ===== */}
-        {res && (
-          <div ref={resultRef} className="scroll-mt-4 px-5 py-8 lg:sticky lg:top-0 lg:max-h-screen lg:self-start lg:overflow-y-auto lg:px-12">
-            <Dashboard s={submitted} res={res} stale={stale} />
-          </div>
-        )}
+        {/* ===== Results (live) ===== */}
+        <div className="px-5 py-8 lg:h-full lg:overflow-y-auto lg:px-12">
+          <Dashboard s={s} res={res} />
+        </div>
       </main>
 
-      <footer className="border-t border-white/10 px-5 py-4 text-center text-xs text-slate-500 lg:px-10">
+      <footer className="shrink-0 border-t border-white/10 px-5 py-4 text-center text-xs text-slate-500 lg:px-10">
         Công cụ mô phỏng không chính thức, không liên kết với Garena / Tencent. Công thức chỉ mang tính tham khảo.
       </footer>
     </div>

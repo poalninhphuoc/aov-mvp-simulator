@@ -6,7 +6,7 @@ Công cụ phân tích & mô phỏng điểm MVP **Liên Quân Mobile (Arena of 
 
 ## Tính năng
 
-- Trang đầu chỉ có form nhập thông số; bấm **Tính toán** mới hiện bảng kết quả (preset tự tính luôn)
+- Kết quả cập nhật trực tiếp khi kéo thanh trượt, mỗi bên (form / kết quả) có thanh cuộn riêng
 - 5 vai trò với trọng số riêng, KDA thuần, KP%, điểm đánh giá `3.0 – 16.0` (có soft-cap trên 11.0)
 - Hạng C / B / A / S / SS / SSS với **hard-gate**: đủ điểm nhưng trượt điều kiện cứng sẽ bị hạ bậc và hiện rõ lý do
 - Checklist mở khoá SSS / SS / S (✔ đạt, ✘ thiếu), phân rã điểm số, 4 preset kiểm thử
