@@ -19,6 +19,7 @@ function Slider({ label, value, min, max, onChange, color = '#06B6D4', suffix = 
           <input
             type="number" min={min} max={max} value={value} aria-label={`${label} (nhập số)`}
             onFocus={(e) => e.target.select()}
+            onMouseUp={(e) => e.preventDefault()}
             onChange={(e) => {
               if (e.target.value === '' || Number.isNaN(Number(e.target.value))) return
               onChange(Math.min(max, Math.max(min, Math.round(Number(e.target.value)))))
