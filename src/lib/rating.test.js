@@ -40,7 +40,7 @@ test('Soft-cap trên 11 và kẹp [3, 16]', () => {
 })
 
 test('Hard-gate: đủ điểm SSS nhưng thua -> hạ xuống SS', () => {
-  const p = PRESETS.find((x) => x.id === 'sss').state
+  const p = { ...PRESETS.find((x) => x.id === 'ss').state, win: true }
   const win = calcRating(p)
   const lose = calcRating({ ...p, win: false })
   assert.equal(win.rank.tier, 'SSS')
@@ -69,8 +69,8 @@ test('Preset chạy được và trả hạng hợp lệ', () => {
 
 test('Preset ra đúng hạng như tên gọi', () => {
   const tier = (id) => calcRating(PRESETS.find((p) => p.id === id).state).rank.tier
-  assert.ok(['A', 'S'].includes(tier('normal')))
+  assert.equal(tier('normal'), 'A')
+  assert.equal(tier('s'), 'S')
   assert.equal(tier('ss'), 'SS')
-  assert.equal(tier('sss'), 'SSS')
   assert.equal(tier('sup'), 'SSS')
 })

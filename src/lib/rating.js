@@ -46,9 +46,9 @@ export const DEFAULT_STATE = {
 }
 
 export const PRESETS = [
-  { id: 'normal', label: 'Trận Tốt Bình Thường (Hạng A/S)', state: { ...DEFAULT_STATE, k: 6, d: 3, a: 8, teamKills: 25, dmgDealt: 24, dmgTaken: 15 } },
-  { id: 'ss', label: 'Gánh Team Chuẩn SS', state: { ...DEFAULT_STATE, k: 11, d: 1, a: 9, teamKills: 26, dmgDealt: 34, dmgTaken: 16, tower: 'high', badges: ['legendary'] } },
-  { id: 'sss', label: 'Thần Thánh SSS (Out trình)', state: { ...DEFAULT_STATE, k: 16, d: 0, a: 12, teamKills: 32, dmgDealt: 42, dmgTaken: 20, tower: 'ultra', badges: ['mega', 'legendary', 'topGold'] } },
+  { id: 'normal', label: 'Trận Tốt Bình Thường (Hạng A)', state: { ...DEFAULT_STATE, k: 6, d: 3, a: 8, teamKills: 25, dmgDealt: 24, dmgTaken: 15 } },
+  { id: 's', label: 'Gánh Team Chuẩn S', state: { ...DEFAULT_STATE, k: 10, d: 3, a: 10, teamKills: 26, dmgDealt: 32, dmgTaken: 16, tower: 'high', badges: ['triple'] } },
+  { id: 'ss', label: 'Thần Thánh SS (Thua vẫn tối đa SS)', state: { ...DEFAULT_STATE, win: false, k: 16, d: 0, a: 12, teamKills: 32, dmgDealt: 42, dmgTaken: 20, tower: 'ultra', badges: ['mega', 'legendary', 'topGold'] } },
   { id: 'sup', label: 'Trợ Thủ SSS Hoàn Hảo', state: { ...DEFAULT_STATE, role: 'support', k: 2, d: 0, a: 26, teamKills: 30, dmgDealt: 12, dmgTaken: 38, tower: 'high', badges: ['legendary'] } },
 ]
 
