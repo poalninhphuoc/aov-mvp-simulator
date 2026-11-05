@@ -6,12 +6,11 @@ Công cụ phân tích & mô phỏng điểm MVP **Liên Quân Mobile (Arena of 
 
 ## Tính năng
 
-- 5 vai trò với trọng số riêng (Xạ thủ/Pháp sư, Sát thủ, Đấu sĩ, Trợ thủ, Đỡ đòn)
-- KDA thuần, nhãn **PERFECT KDA**, KP% với thanh tiến trình
-- Điểm trận `3.0 – 16.0`, hạng C/B/A/S/SS/SSS, **MVP Thắng** (vàng) / **MVP Bại** (tím) / **MVP Siêu Cấp**
-- Biểu đồ phân rã điểm: nền, K/D/A, KP, sát thương & chống chịu, đẩy trụ & huy hiệu, phạt nằm xuống
-- Tư vấn chiến thuật tự động, 4 preset mẫu
-- Giao diện Esports dark mode, glassmorphism, responsive (2 cột desktop / 1 cột mobile)
+- Trang đầu chỉ có form nhập thông số; bấm **Tính toán** mới hiện bảng kết quả (preset tự tính luôn)
+- 5 vai trò với trọng số riêng, KDA thuần, KP%, điểm đánh giá `3.0 – 16.0` (có soft-cap trên 11.0)
+- Hạng C / B / A / S / SS / SSS với **hard-gate**: đủ điểm nhưng trượt điều kiện cứng sẽ bị hạ bậc và hiện rõ lý do
+- Checklist mở khoá SSS / SS / S (✔ đạt, ✘ thiếu), phân rã điểm số, 4 preset kiểm thử
+- Giao diện Esports dark mode, responsive (2 cột desktop / 1 cột mobile)
 
 ## Chạy local
 
@@ -30,15 +29,17 @@ Stack: React 18, Vite, Tailwind CSS 3, lucide-react. Không cần thư viện bi
 RawKDA   = (K + A) / max(1, D)
 KP%      = min(100, (K + A) / max(1, TeamKills) * 100)
 
-Base     = 4.2 (thắng) | 3.6 (thua)
-KdaScore = min(5.2, (K*wKill + A*wAssist) / max(1, D^0.75) * 0.42)   (+0.5 nếu D=0 và K+A>=5)
-KpScore  = KP/100 * 2.4
-Combat   = (DmgDealt*wDmg + DmgTaken*wTank) * 0.045
-Penalty  = -min(4, max(0, D - DmgTaken/12) * 0.35)
-Rating   = clamp(3, 16, Base + KdaScore + KpScore + Combat + Tower + Badges + Penalty)
+Base     = 4.0 (thắng) | 3.3 (thua)
+KdaScore = min(4.8, sqrt((K*wK + A*wA) / EffDeath) * 1.15)   EffDeath = D==0 ? 0.85 : D^0.85
+ZeroDeath= (D==0 && K+A>=8) ? 0.6 : 0
+KpScore  = (KP/100)^1.3 * 2.2
+Combat   = (DmgDealt*wDmg + DmgTaken*wTank) * 0.042
+Penalty  = -min(4.5, max(0, D - DmgTaken/(Tank|Support ? 18 : 30))^1.15 * 0.42)
+Raw      = Base + KdaScore + ZeroDeath + KpScore + Combat + Tower + Badges + Penalty
+Final    = clamp(3, 16, Raw > 11 ? 11 + (Raw-11)^0.78 : Raw)
 ```
 
-Trọng số vai trò và điểm thưởng nằm trong [`src/lib/rating.js`](src/lib/rating.js) — dễ chỉnh để khớp thực tế hơn.
+Hạng: SSS cần điểm ≥ 14.2, thắng, ít chết, KP ≥ 72% và thống trị vai trò; SS cần điểm ≥ 12.3 cùng điều kiện cứng riêng; S cần ≥ 10.0 và chết ≤ 5; A 7.8–9.9; B 5.5–7.7; C < 5.5. Chi tiết trong [`src/lib/rating.js`](src/lib/rating.js).
 
 ## Triển khai GitHub Pages
 
