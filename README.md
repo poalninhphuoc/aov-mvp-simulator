@@ -47,7 +47,7 @@ Hạng: SSS cần điểm ≥ 14.2, thắng, ít chết, KP ≥ 72% và thống 
 
 ## Triển khai GitHub Pages
 
-Đặt `base: '/<tên-repo>/'` trong `vite.config.js`, chạy `npm run build` rồi publish thư mục `dist/`.
+Mỗi lần push lên `main`, workflow [`deploy.yml`](.github/workflows/deploy.yml) chạy test, build và deploy lên https://poalninhphuoc.github.io/aov-mvp-simulator/. Vite dùng `base: './'` nên chạy được ở bất kỳ đường dẫn con nào.
 
 ## Đóng góp
 
