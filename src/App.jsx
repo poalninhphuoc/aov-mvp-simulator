@@ -41,18 +41,24 @@ const SERIES = {
 
 function Slider({ label, value, min, max, onChange, color = '#06B6D4', suffix = '' }) {
   const pct = ((value - min) / (max - min)) * 100
+  // Chuỗi đang gõ: cho phép xoá trống / gõ lại từ đầu; chốt về giá trị hợp lệ khi rời ô.
+  const [draft, setDraft] = useState(null)
   return (
     <div>
       <div className="mb-2.5 flex items-center justify-between text-[13px]">
         <span className="text-slate-400">{label}</span>
         <span className="flex items-baseline gap-0.5">
           <input
-            type="number" min={min} max={max} value={value} aria-label={`${label} (nhập số)`}
+            type="number" min={min} max={max} value={draft ?? value} aria-label={`${label} (nhập số)`}
             onFocus={(e) => e.target.select()}
             onMouseUp={(e) => e.preventDefault()}
+            onBlur={() => setDraft(null)}
+            onKeyDown={(e) => { if (e.key === 'Enter') e.currentTarget.blur() }}
             onChange={(e) => {
-              if (e.target.value === '' || Number.isNaN(Number(e.target.value))) return
-              onChange(Math.min(max, Math.max(min, Math.round(Number(e.target.value)))))
+              const raw = e.target.value
+              setDraft(raw)
+              if (raw === '' || Number.isNaN(Number(raw))) return
+              onChange(Math.min(max, Math.max(min, Math.round(Number(raw)))))
             }}
             className="num w-12 rounded bg-white/[0.04] px-1.5 py-0.5 text-right font-display text-lg font-bold tabular-nums text-white outline-none transition focus:bg-white/10 focus:ring-1"
             style={{ '--tw-ring-color': color }}
