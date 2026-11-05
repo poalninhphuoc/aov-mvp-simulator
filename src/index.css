@@ -2,39 +2,70 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --surface: #080b14;
+  --hairline: rgba(255, 255, 255, 0.08);
+  --tier: #f59e0b;
+}
+
+html, body, #root { height: 100%; }
+
 body {
   @apply bg-ink-950 text-slate-200 font-sans antialiased;
+  background-color: var(--surface);
   background-image:
-    radial-gradient(900px 500px at 10% -10%, rgba(139, 92, 246, 0.18), transparent 60%),
-    radial-gradient(800px 500px at 100% 0%, rgba(245, 158, 11, 0.12), transparent 60%);
+    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+  background-size: 48px 48px;
   background-attachment: fixed;
 }
+
+::selection { background: rgba(245, 158, 11, 0.35); }
+
+/* Thanh cuộn mảnh */
+* { scrollbar-width: thin; scrollbar-color: rgba(255, 255, 255, 0.15) transparent; }
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.14); border-radius: 8px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.25); }
 
 /* Slider */
 input[type='range'] {
   -webkit-appearance: none;
   appearance: none;
-  height: 8px;
+  height: 4px;
   border-radius: 999px;
   outline: none;
   cursor: pointer;
   background: linear-gradient(to right, var(--c, #06b6d4) var(--p, 0%), rgba(255, 255, 255, 0.1) var(--p, 0%));
-  transition: background 0.15s ease;
 }
 input[type='range']::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
-  background: #fff;
-  border: 3px solid var(--c, #06b6d4);
-  box-shadow: 0 0 12px var(--c, #06b6d4);
+  background: #0b0f19;
+  border: 2px solid var(--c, #06b6d4);
+  box-shadow: 0 0 0 4px rgba(8, 11, 20, 0.9), 0 0 14px var(--c, #06b6d4);
   transition: transform 0.15s ease;
 }
-input[type='range']::-webkit-slider-thumb:hover { transform: scale(1.2); }
+input[type='range']:hover::-webkit-slider-thumb,
+input[type='range']:focus-visible::-webkit-slider-thumb { transform: scale(1.25); }
 input[type='range']::-moz-range-thumb {
-  width: 16px; height: 16px; border-radius: 50%;
-  background: #fff; border: 3px solid var(--c, #06b6d4);
+  width: 12px; height: 12px; border-radius: 50%;
+  background: #0b0f19; border: 2px solid var(--c, #06b6d4);
+}
+
+/* Ô nhập số: ẩn nút tăng/giảm */
+input.num::-webkit-outer-spin-button,
+input.num::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+input.num { -moz-appearance: textfield; appearance: textfield; }
+
+/* Hào quang theo hạng */
+.aura {
+  background:
+    radial-gradient(60% 70% at 18% 30%, color-mix(in srgb, var(--tier) 22%, transparent), transparent 70%),
+    radial-gradient(40% 50% at 90% 0%, color-mix(in srgb, var(--tier) 10%, transparent), transparent 70%);
+  transition: background 0.6s ease;
 }
 
 @keyframes glow {
@@ -43,7 +74,12 @@ input[type='range']::-moz-range-thumb {
 }
 .perfect-glow { animation: glow 1.6s ease-in-out infinite; }
 
-/* Ẩn nút tăng/giảm của ô nhập số */
-input.num::-webkit-outer-spin-button,
-input.num::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-input.num { -moz-appearance: textfield; appearance: textfield; }
+@keyframes rise {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+.rise { animation: rise 0.4s ease both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .perfect-glow, .rise { animation: none; }
+}
